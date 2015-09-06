@@ -39,6 +39,6 @@ asteroidStyle = solid white -- { defaultLine | color = white }
 draw : List Asteroid -> Form
 draw asteroids =
   let
-    dr a = move a.position <| rotate a.angle <| traced asteroidStyle <| ngon 5 13
+    dr a = move a.position <| rotate a.angle <| outlined asteroidStyle <| ngon 5 13
   in
     group <| List.map dr asteroids
