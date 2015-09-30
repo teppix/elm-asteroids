@@ -1,7 +1,7 @@
 import Graphics.Element exposing (Element)
 import Graphics.Collage exposing (collage)
 
-import Types exposing (Gamestate, Player, Particle, Asteroid, Input)
+import Types exposing (..)
 import Helpers exposing (collide)
 import Input exposing (input)
 
@@ -17,7 +17,9 @@ initialGamestate =
   , lasers    = Particles.init
   , asteroids = Asteroids.init
   , player    = Player.init
+  , events    = []
   }
+
 
 spawnParticles : Gamestate -> List Particle
 spawnParticles gs =
@@ -25,8 +27,10 @@ spawnParticles gs =
     then Particles.explosion gs.player.position
     else []
 
+
 spawnLasers : Gamestate -> Input -> List Particle
 spawnLasers gs input = []
+
 
 update : Input -> Gamestate -> Gamestate
 update input gs =
@@ -45,13 +49,22 @@ update input gs =
       -- simulate existing particles
       updatedParticles = Particles.update gs.particles input.dt
 
+      explosionEvents =
+        if collided
+           then [ EvSound CrashSfx ]
+           else []
+
   in
     { gs | particles <- playerExplosion ++ updatedParticles
          , asteroids <- Asteroids.update gs.asteroids input.dt
          , lasers <- Particles.update gs.lasers input.dt
          , player <- if collided
-                        then Player.init
-                        else Player.update gs.player input
+                        then
+                          Player.init
+                        else
+                          Player.update gs.player input
+
+         , events <- explosionEvents
     }
 
 
@@ -68,6 +81,41 @@ view gamestate =
 
 -- SIGNALS --
 
-main : Signal Element
-main = Signal.map view <| Signal.foldp update initialGamestate input
+gamestate : Signal Gamestate
+gamestate = Signal.foldp update initialGamestate input
 
+main : Signal Element
+main = Signal.map view gamestate
+
+
+-- SOUND
+
+soundSignal : Signal (List Sfx)
+soundSignal =
+  let
+    sndFilter ev =
+      case ev of
+        EvNone -> Nothing
+        EvSound val -> Just val
+
+    filterSoundEvents {events} =
+      List.filterMap sndFilter events
+  in
+     Signal.map filterSoundEvents gamestate
+     |> Signal.filter (\l -> (List.length l) > 0) []
+
+
+port sfxPort : Signal (List String)
+port sfxPort =
+  let
+      mapsound s =
+        case s of
+          NoSfx -> ""
+          LaserSfx -> "laser"
+          HitSfx -> "explosion"
+          CrashSfx -> "crash"
+          SpawnSfx -> "spawn"
+
+      mapsounds s = List.map mapsound s
+  in
+    Signal.map mapsounds soundSignal

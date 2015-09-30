@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Asterois</title>
+  <script src="elm.js" type="text/javascript" charset="utf-8"></script>
+  <style type="text/css" media="screen">
+    body {
+      background-color: #222;
+    }
+
+    div#game {
+      border: 2px solid #666;
+      width: 400px;
+      height: 400px;
+      margin: 100px auto;
+    }
+  </style>
+</head>
+<body>
+  <audio id="snd-laser" src="snd/Laser.mp3" preload="auto"></audio>
+  <audio id="snd-hit" src="snd/Hit.mp3" preload="auto"></audio>
+  <audio id="snd-crash" src="snd/Crash.mp3" preload="auto"></audio>
+  <audio id="snd-spawn" src="snd/Spawn.mp3" preload="auto"></audio>
+  <div id="game"></div>
+  <script>
+    // Init game
+    var div = document.getElementById('game');
+    var game = Elm.embed(Elm.Main, div);
+
+    function playSound(s) {
+      var a = document.getElementById('snd-' + s);
+      if (a === null ) {
+        console.log('unknown sound: ' + s);
+      } else {
+        a.currentTime = 0;
+        a.play();
+      }
+    }
+
+    function playSounds(l) {
+      for(var i=0; i<l.length; i++) {
+        playSound( l[i] );
+      }
+    }
+
+    // Setup ports
+    game.ports.sfxPort.subscribe(playSounds);
+
+  </script>
+</body>
+</html>
