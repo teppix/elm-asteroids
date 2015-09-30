@@ -1,17 +1,20 @@
 module Asteroids where
 
-import Types exposing (..)
 import Graphics.Collage exposing (..)
 import Color exposing (..)
+
+import Types exposing (..)
 
 
 -- INIT
 
+defaultAsteroid : Asteroid
 defaultAsteroid =
-  { position = ()
+  { position = (0,0)
   , speed = (0,0)
   , angle = 0
   }
+
 
 init : List Asteroid
 init =
@@ -25,6 +28,7 @@ init =
 
 -- UPDATE
 
+update : List Asteroid -> Float -> List Asteroid
 update asteroids dt =
   let
       upd a = { a | angle <- a.angle + dt * 0.1 }
@@ -34,6 +38,7 @@ update asteroids dt =
 
 -- GRAPHICS
 
+asteroidStyle : LineStyle
 asteroidStyle = solid white -- { defaultLine | color = white }
 
 draw : List Asteroid -> Form

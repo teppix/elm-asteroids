@@ -6,14 +6,18 @@ import Color exposing (..)
 import Types exposing (Particle, Vector)
 import Helpers exposing (..)
 
+
 particleLife : Float
 particleLife = 40
+
 
 particleLifeDelta : Float
 particleLifeDelta = 30
 
+
 particleCount : Int
 particleCount = 80
+
 
 particleColor : Color
 particleColor = white
@@ -21,6 +25,7 @@ particleColor = white
 
 init : List Particle
 init = []
+
 
 explosion : Vector -> List Particle
 explosion (px, py) = List.map

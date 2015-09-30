@@ -1,11 +1,10 @@
 module Player where
 
-import Types exposing (Player, Input)
-
-import Helpers exposing (..)
+import Graphics.Collage exposing (LineStyle, Shape, Form, traced, polygon, move, rotate, defaultLine)
 import Color exposing (..)
 
-import Graphics.Collage exposing (LineStyle, Shape, Form, traced, polygon, move, rotate, defaultLine)
+import Types exposing (Player, Input)
+import Helpers exposing (..)
 
 
 -- CONSTANTS

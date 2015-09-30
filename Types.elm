@@ -1,10 +1,15 @@
 module Types where
 
-type Sfx = NoSfx | LaserSfx | HitSfx | CrashSfx | SpawnSfx
+type Sfx =
+  NoSfx | LaserSfx | HitSfx | CrashSfx | SpawnSfx
 
-type alias Vector = (Float, Float)
 
-type alias Point = { x: Int, y: Int }
+type alias Vector =
+  (Float, Float)
+
+
+type alias Point =
+  { x: Int, y: Int }
 
 
 type alias Input =
@@ -13,15 +18,12 @@ type alias Input =
     }
 
 
-type Event = EvNone | EvSound Sfx
-
-
 type alias Gamestate =
     { particles : List Particle
     , lasers    : List Particle
     , asteroids : List Asteroid
     , player    : Player
-    , events    : List Event
+    , sfx       : List Sfx
     }
 
 

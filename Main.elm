@@ -4,7 +4,6 @@ import Graphics.Collage exposing (collage)
 import Types exposing (..)
 import Helpers exposing (collide)
 import Input exposing (input)
-
 import Background
 import Particles
 import Asteroids
@@ -17,7 +16,7 @@ initialGamestate =
   , lasers    = Particles.init
   , asteroids = Asteroids.init
   , player    = Player.init
-  , events    = []
+  , sfx       = []
   }
 
 
@@ -35,11 +34,9 @@ spawnLasers gs input = []
 update : Input -> Gamestate -> Gamestate
 update input gs =
   let
-      -- extract all asteroid positions
-      asteroidPositions = List.map .position gs.asteroids
-
       -- check if player collide with any asteroids
-      collided          = List.any (collide 15 gs.player.position) asteroidPositions
+      collided          = List.any (collide 15 gs.player.position)
+                          <| List.map .position gs.asteroids
 
       -- generate particles for player explosion (if needed)
       playerExplosion   = if collided
@@ -49,9 +46,9 @@ update input gs =
       -- simulate existing particles
       updatedParticles = Particles.update gs.particles input.dt
 
-      explosionEvents =
+      explosionSfx =
         if collided
-           then [ EvSound CrashSfx ]
+           then [ CrashSfx ]
            else []
 
   in
@@ -64,7 +61,7 @@ update input gs =
                         else
                           Player.update gs.player input
 
-         , events <- explosionEvents
+         , sfx <- explosionSfx
     }
 
 
@@ -78,6 +75,7 @@ view gamestate =
         , Asteroids.draw gamestate.asteroids
         , Player.draw gamestate.player
         ]
+
 
 -- SIGNALS --
 
@@ -93,16 +91,10 @@ main = Signal.map view gamestate
 soundSignal : Signal (List Sfx)
 soundSignal =
   let
-    sndFilter ev =
-      case ev of
-        EvNone -> Nothing
-        EvSound val -> Just val
-
-    filterSoundEvents {events} =
-      List.filterMap sndFilter events
+      nonEmpty l = not <| List.isEmpty l
   in
-     Signal.map filterSoundEvents gamestate
-     |> Signal.filter (\l -> (List.length l) > 0) []
+    Signal.map .sfx gamestate
+    |> Signal.filter nonEmpty []
 
 
 port sfxPort : Signal (List String)
