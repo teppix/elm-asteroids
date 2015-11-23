@@ -11,18 +11,18 @@ import Types exposing (..)
 defaultAsteroid : Asteroid
 defaultAsteroid =
   { position = (0,0)
-  , speed = (0,0)
-  , angle = 0
+  , speed    = (0,0)
+  , angle    = 0
   }
 
 
 init : List Asteroid
 init =
-  [ { defaultAsteroid | position = (-120, 80) }
+  [ { defaultAsteroid | position = (-120,  80) }
   , { defaultAsteroid | position = ( -65, 110) }
   , { defaultAsteroid | position = (   0, 120) }
   , { defaultAsteroid | position = (  65, 110) }
-  , { defaultAsteroid | position = ( 120, 80) }
+  , { defaultAsteroid | position = ( 120,  80) }
   ]
 
 
@@ -39,7 +39,8 @@ update asteroids dt =
 -- GRAPHICS
 
 asteroidStyle : LineStyle
-asteroidStyle = solid white -- { defaultLine | color = white }
+asteroidStyle = solid white
+
 
 draw : List Asteroid -> Form
 draw asteroids =

@@ -5,11 +5,14 @@ type Sfx =
 
 
 type alias Vector =
-  (Float, Float)
+    ( Float
+    , Float)
 
 
 type alias Point =
-  { x: Int, y: Int }
+    { x: Int
+    , y: Int
+    }
 
 
 type alias Input =

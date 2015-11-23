@@ -82,6 +82,7 @@ view gamestate =
 gamestate : Signal Gamestate
 gamestate = Signal.foldp update initialGamestate input
 
+
 main : Signal Element
 main = Signal.map view gamestate
 

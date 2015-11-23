@@ -17,14 +17,13 @@ playerRotationSpeed : Float
 playerRotationSpeed = 0.07
 
 
-
 -- INIT
 
 init : Player
 init =
     { position = (0,0)
-    , speed = (0,0)
-    , angle = 0.0
+    , speed    = (0,0)
+    , angle    = 0.0
     }
 
 
@@ -37,9 +36,9 @@ update player input =
         then (0, playerAcceleration) |> rotvec player.angle |> addvec player.speed
         else player.speed
     in
-        { player | angle = player.angle - (toFloat input.dir.x)*playerRotationSpeed*input.dt
-            , position = addvec player.position newSpeed |> wrapAround
-            , speed = newSpeed
+        { player | angle    = player.angle - (toFloat input.dir.x)*playerRotationSpeed*input.dt
+                 , position = addvec player.position newSpeed |> wrapAround
+                 , speed    = newSpeed
         }
 
 
