@@ -52,16 +52,16 @@ update input gs =
            else []
 
   in
-    { gs | particles <- playerExplosion ++ updatedParticles
-         , asteroids <- Asteroids.update gs.asteroids input.dt
-         , lasers <- Particles.update gs.lasers input.dt
-         , player <- if collided
+    { gs | particles = playerExplosion ++ updatedParticles
+         , asteroids = Asteroids.update gs.asteroids input.dt
+         , lasers = Particles.update gs.lasers input.dt
+         , player = if collided
                         then
                           Player.init
                         else
                           Player.update gs.player input
 
-         , sfx <- explosionSfx
+         , sfx = explosionSfx
     }
 
 
@@ -102,7 +102,6 @@ port sfxPort =
   let
       mapsound s =
         case s of
-          NoSfx -> ""
           LaserSfx -> "laser"
           HitSfx -> "explosion"
           CrashSfx -> "crash"

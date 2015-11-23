@@ -1,7 +1,7 @@
 module Types where
 
 type Sfx =
-  NoSfx | LaserSfx | HitSfx | CrashSfx | SpawnSfx
+  LaserSfx | HitSfx | CrashSfx | SpawnSfx
 
 
 type alias Vector =

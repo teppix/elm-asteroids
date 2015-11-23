@@ -1,6 +1,6 @@
 module Player where
 
-import Graphics.Collage exposing (LineStyle, Shape, Form, traced, polygon, move, rotate, defaultLine)
+import Graphics.Collage exposing (LineStyle, Path, Form, traced, path, move, rotate, defaultLine)
 import Color exposing (..)
 
 import Types exposing (Player, Input)
@@ -37,9 +37,9 @@ update player input =
         then (0, playerAcceleration) |> rotvec player.angle |> addvec player.speed
         else player.speed
     in
-        { player | angle <- player.angle - (toFloat input.dir.x)*playerRotationSpeed*input.dt
-            , position <- addvec player.position newSpeed |> wrapAround
-            , speed <- newSpeed
+        { player | angle = player.angle - (toFloat input.dir.x)*playerRotationSpeed*input.dt
+            , position = addvec player.position newSpeed |> wrapAround
+            , speed = newSpeed
         }
 
 
@@ -47,20 +47,17 @@ update player input =
 
 playerLineStyle : LineStyle
 playerLineStyle =
-    { defaultLine | color <- white
-                  , width <- 1
+    { defaultLine | color = white
+                  , width = 1
     }
 
 
-playerShape : Shape
-playerShape =
-    polygon [ (0, 9), (7, -9), (0, -5), (-7, -9), (0, 9) ]
+playerShape : Path
+playerShape = path [ (0, 9), (7, -9), (0, -5), (-7, -9), (0, 9) ]
 
 
 draw : Player -> Form
-draw p =
-  playerShape
-    |> traced playerLineStyle
-    |> rotate p.angle
-    |> move p.position
+draw p = traced playerLineStyle playerShape
+         |> rotate p.angle
+         |> move p.position
 

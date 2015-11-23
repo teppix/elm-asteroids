@@ -42,8 +42,8 @@ explosion (px, py) = List.map
 
 particleStyle : Float -> LineStyle
 particleStyle life =
-    { defaultLine | color <- (particleFade particleColor life)
-    , width <- 1
+    { defaultLine | color = (particleFade particleColor life)
+    , width = 1
     }
 
 
@@ -69,8 +69,8 @@ update : List Particle -> Float -> List Particle
 update particles dt =
     let
       filter p = p.life > 0
-      step p = { p | position <- mulvec p.speed dt |> addvec p.position
-                   , life <- p.life - 1
+      step p = { p | position = mulvec p.speed dt |> addvec p.position
+                   , life = p.life - 1
                }
     in
       particles |> List.filter filter |> List.map step
